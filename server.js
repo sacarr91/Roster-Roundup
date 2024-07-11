@@ -1,5 +1,6 @@
 const db = require('./db');
 const inquirer = require('inquirer');
+const welcomeGraphic = require('./db/welcome');
 
 // Create inquirer function with prompts as main prompt for the user
 // chain with .then & include switch
@@ -18,4 +19,5 @@ function viewAllDepartments() {
 
 
 // initiate app on startup
+welcomeGraphic();
 userChoice();
