@@ -1,22 +1,21 @@
-const express = require('express');
-const { Pool } = require('pg');
-require('dotenv').config();
+const db = require('./db');
+const inquirer = require('inquirer');
 
-const PORT = process.env.PORT || 3001;
-const app = express();
+// Create inquirer function with prompts as main prompt for the user
+// chain with .then & include switch
+// create functions (like in query.js line 18)
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+function viewAllDepartments() {
+    db.findAllDepartments()
+        .then(({ rows }) => {
+            let departments = rows;
+            console.table(departments);
+        })
+        .then(() => userChoice());
+}
 
-// Connect to database
-const pool = new Pool(
-    {
-        user: DB_USER,
-        password: DB_PASSWORD,
-        host: 'localhost',
-        database: 'roster_roundup_db'
-    },
-    console.log(`Connected to the roster_roundup_db database.`)
-)
 
-pool.connect();
+
+
+// initiate app on startup
+userChoice();
