@@ -1,16 +1,18 @@
 # Roster Round-Up
-#### <i>An Employee Management System Interface</i>
+This Node app uses Inquirer and Postgres to enable users to view and manage departments, rols, and employees in a company so that they can organize and plan their business.
 
-## Description
-This app uses Inquirer to enable users 
+## User Story
+```md
 AS A business owner
 I WANT to be able to view and manage the departments, roles, and employees in my company
 SO THAT I can organize and plan my business
-  
+```
+
 ## Demo
+The following video shows an example of the application being used from the command line:
 
 
-## Installation
-`npm i` to install dependencies
-`npm build` to run webpack builder
-`npm start` to run app 
+
+## Install & Run
+Install dependencies: `npm i`</br>
+Run app: `npm start` 
