@@ -57,14 +57,14 @@ const questions = [
         type: 'number',
         name: 'newRoleSalary',
         message: 'What is the salary of the role?',
-        validate: '' // <-- what is needed to ensure response is a number?
+        validate: () => console.log('connect function') // <-- what is needed to ensure response is a number?
     },
     {
         type: 'list',
         name: 'newRoleDep',
         message: 'Which department does the role belong to?',
         short: '(Use arrow keys)',
-        choices: [() => ] //function returning array of all current roles in db
+        choices: () => console.log('connect function'),
     },
     {
         type: '',
