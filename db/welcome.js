@@ -26,5 +26,6 @@ function welcomeGraphic() {
 
  module.exports = welcomeGraphic;
 
- welcomeGraphic();
+//  initiated here for testing
+//  welcomeGraphic();
  
