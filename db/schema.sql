@@ -24,7 +24,10 @@ CREATE DATABASE roster_db;
 \c roster_db;
 
 CREATE TABLE
-    department (id SERIAL PRIMARY KEY, name VARCHAR(30) NOT NULL);
+    department (
+        id SERIAL PRIMARY KEY, 
+        name VARCHAR(30) NOT NULL
+    );
 
 CREATE TABLE
     role (

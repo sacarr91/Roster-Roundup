@@ -18,19 +18,15 @@ class DB {
     }
 
     findAllDepartments() {
-        return this.query("SELECT department.id, department.name FROM department");
-        // view: dep.name & dep.id
+        return this.query("SELECT department.id, department.name FROM department;");
     }
 
     findAllRoles() {
-        return this.query("SELECT role.id, role.title, role.DEPARMENTNAME**, role.SALARYAMOUNT** FROM role"); // <-- needs a join situation
-        // view: job title, role id, department, salary
+        return this.query("SELECT r.id, r.title, d.name, r.salary FROM role r JOIN department d ON r.department_id = d.id;"); 
     }
 
-
     findAllEmployees() {
-        return this.query("SELECT employee.id, first_name, last_name, title, departmentNAME, salaryAMOUNT, managerNAME FROM employee"); // <-- needs a join situation
-        // emp id, fn, ln, job title, dep, salary, manager
+        return this.query("SELECT e.id, e.first_name, e.last_name, r.title, d.name, r.salary, manager.first_name, manager.last_name FROM employee e JOIN role r ON e.role_id = r.id JOIN department d on r.department_id = d.id LEFT JOIN employee manager ON e.manager_id = manager.id;"); // combine manager first & last name?
     }
 
     newDepartment() {
