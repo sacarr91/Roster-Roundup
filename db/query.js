@@ -19,14 +19,18 @@ class DB {
 
     findAllDepartments() {
         return this.query("SELECT department.id, department.name FROM department");
+        // view: dep.name & dep.id
     }
 
     findAllRoles() {
         return this.query("SELECT role.id, role.title, role.DEPARMENTNAME**, role.SALARYAMOUNT** FROM role"); // <-- needs a join situation
+        // view: job title, role id, department, salary
     }
+
 
     findAllEmployees() {
         return this.query("SELECT employee.id, first_name, last_name, title, departmentNAME, salaryAMOUNT, managerNAME FROM employee"); // <-- needs a join situation
+        // emp id, fn, ln, job title, dep, salary, manager
     }
 
     newDepartment() {
@@ -39,6 +43,18 @@ class DB {
         // newRoleSalary =>
         // newRoleDep =>
         // return console.log("Added {nameOfNewRole} to database")
+    }
+
+    newEmployee() {
+// first
+// last
+// role
+// manager
+// 'added to database'
+    }
+
+    updateEmployeeRole() {
+
     }
 
 };
