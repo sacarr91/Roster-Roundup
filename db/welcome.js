@@ -17,7 +17,8 @@ const lines = [` `,
 `|R| RR. .Oo.     .oO.|U|    |U| |N|  N |N| |DD|   DD.     |U|    |U| |P|PPP.`,
 `|R|  RR. .Oo.   .oO. |U|    |U| |N|   N|N| |DD|  dD.      |U|    |U| |P|`,
 `|R|   RR. .Oo...oO.   .UUUUUU.  |N|    NN| |DD| dD.        .UUUUUU.  |P|`,
-`|R|    RR.  'OOO'      .UUUU.   |N|     N| |DDDDD.          .UUUU.   |P|`
+`|R|    RR.  'OOO'      .UUUU.   |N|     N| |DDDDD.          .UUUU.   |P|`,
+``
 ];
 
 function welcomeGraphic() {

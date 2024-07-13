@@ -68,8 +68,7 @@ function viewAllRoles() {
 function viewAllEmployees() {
     q.findAllEmployees()
         .then(({ rows }) => {
-            let employees = rows;
-            console.table(employees);
+            console.table(rows);
         })
         .then(() => userChoice());
 };
