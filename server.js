@@ -1,7 +1,7 @@
 // const db = require('./db');
 const inquirer = require('inquirer');
 const welcomeGraphic = require('./db/welcome');
-const { mainMenu, newDepQuestion, newRoleQuestions, newEmployeeQuestions, updateEmployeeQuestions } = require('./db/prompts');
+const { mainMenu, newDepQuestion, newRoleQuestions, newEmployeeQuestions, updateEmpQuestions } = require('./db/prompts');
 const q = require('./db/query')
 
 function userChoice() {
@@ -13,11 +13,11 @@ function userChoice() {
                     break;
                 }
                 case "addEmp": {
-                    q.newEmployee();
+                    addNewEmployee();
                     break;
                 }
                 case "updateEmp": {
-                    q.updateEmployeeRole();
+                    updateEmployeeRole();
                     break;
                 }
                 case "viewAllRoleDetail": {
@@ -25,7 +25,7 @@ function userChoice() {
                     break;
                 }
                 case "addRole": {
-                    newRole();
+                    addNewRole();
                     break;
                 }
                 case "viewAllDepDetail": {
@@ -33,7 +33,7 @@ function userChoice() {
                     break;
                 }
                 case "addDep": {
-                    q.newDepartment();
+                    addNewDepartment();
                     break;
                 }
                 case "quit": {
@@ -78,51 +78,65 @@ function viewAllEmployees() {
 
 
 
-
-/////////// GET ID
-
-function getDepartmentId() { // use in newRole()
-    let d_id;
-    q.listAllDepartments()
-        .then((answer) => {
-            d_id = this.query(`SELECT id FROM department WHERE department."name" = ${answer};`);
-            return { answer, d_id };
-        });
-};
-
-function getManagerId() {
-    let m_id;
-    q.listAllDepartments()
-        .then(({ newEmpManager }) => {
-            m_id = this.query(`SELECT id FROM employee e WHERE e.first_name || ' ' || e.last_name = ${newEmpManager};`);
-            return { newEmpManager, d_id };
-        });
-};
-
 //////// ADD NEW 
 
 function addNewRole() {
-    getDepartmentId()
-        .then(this.query(`INSERT INTO "role" (name, salary, department_id) VALUES ('${newRoleName.input}', ${newRoleSalary.number}, ${d_id});`))
-        .then(console.log(`Added role of ${newRoleName.input} to database`));
+    inquirer.prompt(newRoleQuestions)
+        .then(({ newRoleDep }) => {
+            let d_id = getDepartmentId(newRoleDep);
+            return d_id;
+        })
+        .then(({ newRoleName, newRoleSalary, d_id }) => {
+            q.addRoleToDB(newRoleName, newRoleSalary, d_id)
+        })
+        .finally(console.log(`Added role of ${newRoleName} to database`));
 };
-
 
 function addNewEmployee() {
-    this.query(`INSERT INTO employee (first_name, last_name, manager_id) VALUES (${input.name});`);
-    console.log(`Added ${input.name} department to database.`);
+    inquirer.prompt(newEmployeeQuestions)
+        //get m_id
+        .then(({ newEmpManager }) => {
+            let m_id = getPersonId(newEmpManager);
+            return m_id;
+        })
+        //get r_id
+        .then(({ newEmpRole }) => {
+            let r_id = getRoleId(newEmpRole);
+            return r_id;
+        })
+        .then(({ newEmpFirstName, newEmpLastName }, r_id, m_id) => {
+            q.addEmpToDB(newEmpFirstName, newEmpLastName, r_id, m_id)
+        })
+        .finally(() =>
+            console.log(`Added ${newEmpFirstName} ${newEmpLastName} department to database.`));
 };
 
-newDepartment() {
-    this.query(`INSERT INTO department (name) VALUES (${input.name});`);
-    console.log(`Added ${input.name} department to database.`);
+function addNewDepartment() {
+    inquirer.prompt(newDepQuestion)
+        .then(({ newDep }) =>
+            q.addDepToDB(newDep))
+        .finally(() =>
+            console.log(`Added ${newDep} department to database.`))
 };
 
 
 ////// UPDATE
 
-updateEmployeeRole() {
-    console.log(`Updated employee's role`);
+function updateEmployeeRole() {
+    inquirer.prompt(updateEmpQuestions)
+        .then(({ updateEmpSelect }) => {
+            let e_id = q.getPersonId(updateEmpSelect);
+            return e_id;
+        })
+        .then(({ updateEmpRole }) => {
+            let r_id = q.getRoleId(updateEmpRole);
+            return r_id;
+        })
+        .then((e_id, r_id) =>
+            q.updateEmpRoleInDB(e_id, r_id)
+        )
+        .finally((updateEmpSelect) =>
+            console.log(`Updated ${updateEmpSelect}'s role`));
 };
 
 

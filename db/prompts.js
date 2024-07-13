@@ -60,7 +60,7 @@ const newRoleQuestions = [
         type: 'number',
         name: 'newRoleSalary',
         message: 'What is the salary of the role?',
-        validate: () => console.log('connect function') // <-- what is needed to ensure response is a number?
+        // validate: () => console.log('connect function') // <-- what is needed to ensure response is a number?
     },
     {
         type: 'list',
