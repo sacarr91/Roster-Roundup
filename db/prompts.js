@@ -115,4 +115,4 @@ const updateEmpQuestions = [
     },
 ];
 
-module.exports = { mainMenu, newDepQuestion, newRoleQuestions, newEmployeeQuestions, updateEmpQuestions };
+module.exports = {mainMenu, newDepQuestion, newRoleQuestions, newEmployeeQuestions, updateEmpQuestions};

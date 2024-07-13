@@ -1,39 +1,47 @@
-const db = require('./db');
+// const db = require('./db');
 const inquirer = require('inquirer');
 const welcomeGraphic = require('./db/welcome');
-const i = require('./db/prompts');
+const { mainMenu, newDepQuestion, newRoleQuestions, newEmployeeQuestions, updateEmployeeQuestions } = require('./db/prompts');
 const q = require('./db/query')
 
 function userChoice() {
-    inquirer.prompt(i.mainMenu)
-        .then((answer) => {
-            switch (answer) {
-                case viewAllEmpDetail:
+        inquirer.prompt(mainMenu)
+        .then(({main}) => {
+            switch (main) {
+                case "viewAllEmpDetail": {
                     viewAllEmployees();
                     break;
-                case addEmp:
+                }
+                case "addEmp": {
                     newEmployee();
                     break;
-                case updateEmp:
+                }
+                case "updateEmp": {
                     updateEmployeeRole();
                     break;
-                case viewAllRoleDetail:
+                }
+                case "viewAllRoleDetail": {
                     viewAllRoles();
                     break;
-                case addRole:
+                }
+                case "addRole": {
                     newRole();
                     break;
-                case viewAllDepDetail:
+                }
+                case "viewAllDepDetail": {
                     viewAllDepartments();
                     break;
-                case addDep:
+                }
+                case "addDep": {
                     newDepartment();
                     break;
-                case quit:
-
+                }
+                case "quit": {
+                    console.log(`See you next time! Type 'npm start' to run app again.`)
                     break;
-            }
+                }
 
+            }
         });
 };
 

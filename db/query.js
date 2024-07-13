@@ -42,15 +42,22 @@ class DB {
     }
 
     newDepartment() {
-        // INSERT {input} INTO department
-        // return console.log("Added {input} to database")
+        this.query(`INSERT INTO department (name) VALUES (${input.name});`);
+        console.log(`Added ${input.name} department to database.`);
     }
 
+    selectDepartment() {
+        let d_id;
+        this.listAllDepartments()
+            .then((answer) => {
+                d_id = this.query(`SELECT id FROM department WHERE department."name" = ${answer};`);
+                return {answer, d_id};
+            });
+    }
     newRole() {
-        // newRoleName => INSERT {input} INTO role
-        // newRoleSalary =>
-        // newRoleDep =>
-        // return console.log("Added {nameOfNewRole} to database")
+        this.selectDepartment()
+            .then(this.query(`INSERT INTO "role" (name, salary, department_id) VALUES ('${newRoleName.input}', ${newRoleSalary.number}, ${d_id});`))
+            .then(console.log(`Added role of ${newRoleName.input} to database`));
     }
 
     newEmployee() {
