@@ -1,6 +1,4 @@
-
-
-const questions = [
+const mainMenu = [
     {
         type: 'list',
         name: 'main',
@@ -41,13 +39,17 @@ const questions = [
             }
         ],
         pageSize: 7,
-        suffix: '(Move up and down to reveal more choices'
-    },
+        suffix: '(Move up and down to reveal more choices)'
+    }];
+
+const newDepQuestion = [
     {
         type: 'input',
         name: 'newDep',
         message: 'What is the name of the department?'
-    },
+    }];
+
+const newRoleQuestions = [
     {
         type: 'input',
         name: 'newRoleName',
@@ -65,27 +67,29 @@ const questions = [
         message: 'Which department does the role belong to?',
         short: '(Use arrow keys)',
         choices: () => console.log('connect function'),
-    },
+    }];
+
+const newEmployeeQuestions = [
     {
-        type: '',
-        name: '',
+        type: 'input',
+        name: 'newEmpFirstName',
         message: '',
     },
     {
-        type: '',
-        name: '',
+        type: 'input',
+        name: 'newEmpLastName',
         message: '',
     },
     {
-        type: '',
-        name: '',
+        type: 'list',
+        name: 'newEmpRole',
         message: '',
     },
     {
-        type: '',
-        name: '',
+        type: 'input',
+        name: 'newEmpManager',
         message: '',
     }];
 
 
-module.exports = questions;
+module.exports = { mainMenu, newDepQuestion, newRoleQuestions, newEmployeeQuestions };

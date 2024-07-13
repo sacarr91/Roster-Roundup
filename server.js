@@ -1,7 +1,7 @@
 const db = require('./db');
 const inquirer = require('inquirer');
 const welcomeGraphic = require('./db/welcome');
-const questions = require('./db/prompts');
+const { mainMenu, newDepQuestion, newRoleQuestions, newEmployeeQuestions } = require('./db/prompts');
 
 // Create inquirer function with prompts as main prompt for the user
 
@@ -12,13 +12,35 @@ const questions = require('./db/prompts');
 // chain with .then & include switch
 
 function userChoice() {
-    inquirer.prompt(questions)
-        .then((answers) => {
-            // const mdContent = generateMarkdown(answers);
-        
-            // writeFile("README-template.md", mdContent)
-            // .catch(err ? console.log(err) : console.log("Successfully created MD file!")
-            // );
+    inquirer.prompt(mainMenu)
+        .then((answer) => {
+            switch (answer) {
+                case viewEmps:
+
+                    break;
+                case addEmp:
+
+                    break;
+                case updateEmp:
+
+                    break;
+                case viewRoles:
+
+                    break;
+                case addRole:
+
+                    break;
+                case viewDeps:
+
+                    break;
+                case addDep:
+
+                    break;
+                case quit:
+
+                    break;
+            }
+
         });
 };
 
