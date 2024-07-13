@@ -81,18 +81,23 @@ function viewAllEmployees() {
 //////// ADD NEW 
 
 function addNewRole() {
+    let role;
     inquirer.prompt(newRoleQuestions)
         .then(({ newRoleDep }) => {
             let d_id = getDepartmentId(newRoleDep);
             return d_id;
         })
         .then(({ newRoleName, newRoleSalary, d_id }) => {
-            q.addRoleToDB(newRoleName, newRoleSalary, d_id)
+            role = newRoleName;
+            q.addRoleToDB(role, newRoleSalary, d_id);
+            return role;
         })
-        .finally(console.log(`Added role of ${newRoleName} to database`));
+        .then(console.log(`Added role of ${role} to database`))
+        .then(() => userChoice());
 };
 
 function addNewEmployee() {
+    let employee;
     inquirer.prompt(newEmployeeQuestions)
         //get m_id
         .then(({ newEmpManager }) => {
@@ -105,28 +110,38 @@ function addNewEmployee() {
             return r_id;
         })
         .then(({ newEmpFirstName, newEmpLastName }, r_id, m_id) => {
-            q.addEmpToDB(newEmpFirstName, newEmpLastName, r_id, m_id)
+            employee = `${newEmpFirstName} ${newEmpLastName}`;
+            q.addEmpToDB(newEmpFirstName, newEmpLastName, r_id, m_id);
+            return employee;
         })
-        .finally(() =>
-            console.log(`Added ${newEmpFirstName} ${newEmpLastName} department to database.`));
+        .then(() =>
+            console.log(`Added ${employee} department to database.`))
+        .then(() => userChoice());
 };
 
 function addNewDepartment() {
+    let dept;
     inquirer.prompt(newDepQuestion)
-        .then(({ newDep }) =>
-            q.addDepToDB(newDep))
-        .finally(() =>
-            console.log(`Added ${newDep} department to database.`))
+        .then(({ newDep }) => {
+            dept = newDep;
+            q.addDepToDB(dept);
+            return dept;
+        })
+        .then((dept) =>
+            console.log(`Added ${dept} department to database.`))
+        .then(() => userChoice());
 };
 
 
 ////// UPDATE
 
 function updateEmployeeRole() {
+    let employee;
     inquirer.prompt(updateEmpQuestions)
         .then(({ updateEmpSelect }) => {
-            let e_id = q.getPersonId(updateEmpSelect);
-            return e_id;
+            let employee = updateEmpSelect;
+            let e_id = q.getPersonId(employee);
+            return employee, e_id;
         })
         .then(({ updateEmpRole }) => {
             let r_id = q.getRoleId(updateEmpRole);
@@ -135,8 +150,9 @@ function updateEmployeeRole() {
         .then((e_id, r_id) =>
             q.updateEmpRoleInDB(e_id, r_id)
         )
-        .finally((updateEmpSelect) =>
-            console.log(`Updated ${updateEmpSelect}'s role`));
+        .then((employee) =>
+            console.log(`Updated ${employee}'s role`))
+        .then(() => userChoice());
 };
 
 

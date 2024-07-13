@@ -8,8 +8,24 @@ const mainMenu = [
         short: '(Use arrow keys)',
         choices: [
             {
+                name: "View All Departments",
+                value: "viewAllDepDetail"
+            },
+            {
+                name: "View All Roles",
+                value: "viewAllRoleDetail"
+            },
+            {
                 name: "View All Employees",
                 value: "viewAllEmpDetail"
+            },
+            {
+                name: "Add Department",
+                value: "addDep"
+            },
+            {
+                name: "Add Role",
+                value: "addRole"
             },
             {
                 name: "Add Employee",
@@ -18,23 +34,7 @@ const mainMenu = [
             {
                 name: "Update Employee Role",
                 value: "updateEmp"
-            },
-            {
-                name: "View All Roles",
-                value: "viewAllRoleDetail"
-            },
-            {
-                name: "Add Role",
-                value: "addRole"
-            },
-            {
-                name: "View All Departments",
-                value: "viewAllDepDetail"
-            },
-            {
-                name: "Add Department",
-                value: "addDep"
-            },
+            },         
             {
                 name: "Quit",
                 value: "quit"
