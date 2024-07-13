@@ -1,40 +1,33 @@
 const db = require('./db');
 const inquirer = require('inquirer');
 const welcomeGraphic = require('./db/welcome');
-const { mainMenu, newDepQuestion, newRoleQuestions, newEmployeeQuestions } = require('./db/prompts');
-
-// Create inquirer function with prompts as main prompt for the user
-
-
-
-
-
-// chain with .then & include switch
+const i = require('./db/prompts');
+const q = require('./db/query')
 
 function userChoice() {
-    inquirer.prompt(mainMenu)
+    inquirer.prompt(i.mainMenu)
         .then((answer) => {
             switch (answer) {
-                case viewEmps:
-
+                case viewAllEmpDetail:
+                    viewAllEmployees();
                     break;
                 case addEmp:
-
+                    newEmployee();
                     break;
                 case updateEmp:
-
+                    updateEmployeeRole();
                     break;
-                case viewRoles:
-
+                case viewAllRoleDetail:
+                    viewAllRoles();
                     break;
                 case addRole:
-
+                    newRole();
                     break;
-                case viewDeps:
-
+                case viewAllDepDetail:
+                    viewAllDepartments();
                     break;
                 case addDep:
-
+                    newDepartment();
                     break;
                 case quit:
 
@@ -47,13 +40,31 @@ function userChoice() {
 // create functions (like in query.js line 18)
 
 function viewAllDepartments() {
-    db.findAllDepartments()
+    q.findAllDepartments()
         .then(({ rows }) => {
             let departments = rows;
             console.table(departments);
         })
         .then(() => userChoice());
-}
+};
+
+function viewAllRoles() {
+    q.findAllRoles()
+        .then(({ rows }) => {
+            let roles = rows;
+            console.table(roles);
+        })
+        .then(() => userChoice());
+};
+
+function viewAllEmployees() {
+    q.findAllEmployees()
+        .then(({ rows }) => {
+            let employees = rows;
+            console.table(employees);
+        })
+        .then(() => userChoice());
+};
 
 
 

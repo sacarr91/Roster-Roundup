@@ -1,3 +1,5 @@
+const { findAllEmployees, findAllRoles, selectManager, listAllRoles, listAllDepartments, listAllEmployees } = require("./query");
+
 const mainMenu = [
     {
         type: 'list',
@@ -7,7 +9,7 @@ const mainMenu = [
         choices: [
             {
                 name: "View All Employees",
-                value: "viewEmps"
+                value: "viewAllEmpDetail"
             },
             {
                 name: "Add Employee",
@@ -19,7 +21,7 @@ const mainMenu = [
             },
             {
                 name: "View All Roles",
-                value: "viewRoles"
+                value: "viewAllRoleDetail"
             },
             {
                 name: "Add Role",
@@ -27,7 +29,7 @@ const mainMenu = [
             },
             {
                 name: "View All Departments",
-                value: "viewDeps"
+                value: "viewAllDepDetail"
             },
             {
                 name: "Add Department",
@@ -66,30 +68,51 @@ const newRoleQuestions = [
         name: 'newRoleDep',
         message: 'Which department does the role belong to?',
         short: '(Use arrow keys)',
-        choices: () => console.log('connect function'),
+        choices: [{ ...listAllDepartments }],
     }];
 
 const newEmployeeQuestions = [
     {
         type: 'input',
         name: 'newEmpFirstName',
-        message: '',
+        message: `What is the employee's first name?`,
     },
     {
         type: 'input',
         name: 'newEmpLastName',
-        message: '',
+        message: `What is the employee's last name?`,
     },
     {
         type: 'list',
         name: 'newEmpRole',
-        message: '',
+        message: `What is the employee's role?`,
+        choices: [{ ...listAllRoles }],
+        suffix: '(Move up and down to reveal more choices)'
     },
     {
-        type: 'input',
+        type: 'list',
         name: 'newEmpManager',
-        message: '',
+        message: `Who is the employee's manager?`,
+        choices: [{ ...listAllEmployees }, 'None'],
+        suffix: '(Move up and down to reveal more choices)'
     }];
 
+const updateEmpQuestions = [
+    {
+        type: 'list',
+        name: 'updateEmpSelect',
+        message: `Which employee's role do you want to update?`,
+        choices: [{ ...listAllEmployees }]
+    },
+    {
+        type: 'list',
+        name: 'updateEmpRole',
+        message: `Which role do you want to assign the selected employee?`,
+        short: '(Use arrow keys)',
+        choices: [{ ...listAllRoles }],
+        suffix: '(Move up and down to reveal more choices)'
 
-module.exports = { mainMenu, newDepQuestion, newRoleQuestions, newEmployeeQuestions };
+    },
+];
+
+module.exports = { mainMenu, newDepQuestion, newRoleQuestions, newEmployeeQuestions, updateEmpQuestions };
