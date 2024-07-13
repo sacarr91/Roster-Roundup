@@ -40,8 +40,7 @@ const mainMenu = [
                 value: "quit"
             }
         ],
-        pageSize: 7,
-        suffix: '(Move up and down to reveal more choices)'
+        pageSize: 7
     }];
 
 const newDepQuestion = [
@@ -86,15 +85,13 @@ const newEmployeeQuestions = [
         type: 'list',
         name: 'newEmpRole',
         message: `What is the employee's role?`,
-        choices: [{ ...listAllRoles }],
-        suffix: '(Move up and down to reveal more choices)'
+        choices: [{ ...listAllRoles }]
     },
     {
         type: 'list',
         name: 'newEmpManager',
         message: `Who is the employee's manager?`,
-        choices: [{ ...listAllEmployees }, 'None'],
-        suffix: '(Move up and down to reveal more choices)'
+        choices: [{ ...listAllEmployees }, 'None']
     }];
 
 const updateEmpQuestions = [

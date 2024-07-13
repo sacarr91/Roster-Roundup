@@ -21,62 +21,36 @@ class DB {
         return this.query("SELECT department.id, department.name FROM department;");
     }
 
-    listAllDepartments() {
-        return this.query("SELECT department.name FROM department ORDER BY department;");
-    }
-
     findAllRoles() {
         return this.query("SELECT r.id, r.title, d.name, r.salary FROM role r JOIN department d ON r.department_id = d.id;");
     }
 
-    listAllRoles() {
-        return this.query("SELECT role.title FROM role ORDER BY title;");
-    }
+    
 
     findAllEmployees() {
-        return this.query("SELECT e.id, e.first_name, e.last_name, r.title, d.name, r.salary, manager.first_name || ' ' || manager.last_name as manager FROM employee e JOIN role r ON e.role_id = r.id JOIN department d on r.department_id = d.id LEFT JOIN employee manager ON e.manager_id = manager.id;");
+        return this.query("SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department, r.salary, manager.first_name || ' ' || manager.last_name as manager FROM employee e JOIN role r ON e.role_id = r.id JOIN department d on r.department_id = d.id LEFT JOIN employee manager ON e.manager_id = manager.id;");
     }
 
     listAllEmployees() {
         return this.query("SELECT e.first_name || ' ' || e.last_name FROM employee e ORDER BY first_name;");
     }
 
-    newDepartment() {
-        this.query(`INSERT INTO department (name) VALUES (${input.name});`);
-        console.log(`Added ${input.name} department to database.`);
+
+    //// FOR CHOICE ARRAYS 
+
+    listAllDepartments() {
+        return this.query("SELECT department.name FROM department ORDER BY department;");
     }
 
-    selectDepartment() {
-        let d_id;
-        this.listAllDepartments()
-            .then((answer) => {
-                d_id = this.query(`SELECT id FROM department WHERE department."name" = ${answer};`);
-                return {answer, d_id};
-            });
-    }
-    newRole() {
-        this.selectDepartment()
-            .then(this.query(`INSERT INTO "role" (name, salary, department_id) VALUES ('${newRoleName.input}', ${newRoleSalary.number}, ${d_id});`))
-            .then(console.log(`Added role of ${newRoleName.input} to database`));
+    listAllRoles() {
+        return this.query("SELECT role.title FROM role ORDER BY title;");
     }
 
-    newEmployee() {
-        // first
-        // last
-        // role
-        // manager
-        // console.log 'added to database'
+    listAllEmployees() {
+        return this.query("SELECT e.first_name || ' ' || e.last_name FROM employee e ORDER BY first_name;");
     }
-
-    updateEmployeeRole() {
-        console.log(`Updated employee's role`);
-    }
-
+   
 };
-
-// find all departments
-
-
 
 
 

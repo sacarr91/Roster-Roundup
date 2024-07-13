@@ -5,19 +5,19 @@ const { mainMenu, newDepQuestion, newRoleQuestions, newEmployeeQuestions, update
 const q = require('./db/query')
 
 function userChoice() {
-        inquirer.prompt(mainMenu)
-        .then(({main}) => {
+    inquirer.prompt(mainMenu)
+        .then(({ main }) => {
             switch (main) {
                 case "viewAllEmpDetail": {
                     viewAllEmployees();
                     break;
                 }
                 case "addEmp": {
-                    newEmployee();
+                    q.newEmployee();
                     break;
                 }
                 case "updateEmp": {
-                    updateEmployeeRole();
+                    q.updateEmployeeRole();
                     break;
                 }
                 case "viewAllRoleDetail": {
@@ -33,7 +33,7 @@ function userChoice() {
                     break;
                 }
                 case "addDep": {
-                    newDepartment();
+                    q.newDepartment();
                     break;
                 }
                 case "quit": {
@@ -45,7 +45,9 @@ function userChoice() {
         });
 };
 
-// create functions (like in query.js line 18)
+
+
+////////// VIEW ALL
 
 function viewAllDepartments() {
     q.findAllDepartments()
@@ -68,7 +70,8 @@ function viewAllRoles() {
 function viewAllEmployees() {
     q.findAllEmployees()
         .then(({ rows }) => {
-            console.table(rows);
+            let employees = rows;
+            console.table(employees);
         })
         .then(() => userChoice());
 };
@@ -76,6 +79,55 @@ function viewAllEmployees() {
 
 
 
-// initiate app on startup
+/////////// GET ID
+
+function getDepartmentId() { // use in newRole()
+    let d_id;
+    q.listAllDepartments()
+        .then((answer) => {
+            d_id = this.query(`SELECT id FROM department WHERE department."name" = ${answer};`);
+            return { answer, d_id };
+        });
+};
+
+function getManagerId() {
+    let m_id;
+    q.listAllDepartments()
+        .then(({ newEmpManager }) => {
+            m_id = this.query(`SELECT id FROM employee e WHERE e.first_name || ' ' || e.last_name = ${newEmpManager};`);
+            return { newEmpManager, d_id };
+        });
+};
+
+//////// ADD NEW 
+
+function addNewRole() {
+    getDepartmentId()
+        .then(this.query(`INSERT INTO "role" (name, salary, department_id) VALUES ('${newRoleName.input}', ${newRoleSalary.number}, ${d_id});`))
+        .then(console.log(`Added role of ${newRoleName.input} to database`));
+};
+
+
+function addNewEmployee() {
+    this.query(`INSERT INTO employee (first_name, last_name, manager_id) VALUES (${input.name});`);
+    console.log(`Added ${input.name} department to database.`);
+};
+
+newDepartment() {
+    this.query(`INSERT INTO department (name) VALUES (${input.name});`);
+    console.log(`Added ${input.name} department to database.`);
+};
+
+
+////// UPDATE
+
+updateEmployeeRole() {
+    console.log(`Updated employee's role`);
+};
+
+
+
+
+////////// INIT
 welcomeGraphic();
 userChoice();
