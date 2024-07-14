@@ -15,10 +15,10 @@ https://github.com/user-attachments/assets/280f7033-e919-4659-a707-e77025312142
 
 
 ## Install & Run
-Using a CLI or GUI...
+<b>Using a CLI or GUI...</b></br>
 Connect to the `roster_db` database
 
-In the command line...
+<b>In the command line...</b></br>
 Install dependencies: `npm i`</br>
 Run app: `npm start` 
 
