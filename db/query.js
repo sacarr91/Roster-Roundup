@@ -51,16 +51,20 @@ class DB {
         return this.query(`SELECT id FROM department WHERE department."name" = '${depName}';`);
     }
 
-    getPersonId(person) { // use in addNewEmployee()
-        return this.query(`SELECT id FROM employee e WHERE e.first_name || ' ' || e.last_name = '${person}';`);
-    }
-
     getRoleId(roleName) { // use in addNewEmployee()
         return this.query(`SELECT id FROM role e WHERE role.title = '${roleName}';`);
     }
 
+    getPersonId(person) { // use in addNewEmployee()
+        return this.query(`SELECT id FROM employee e WHERE e.first_name || ' ' || e.last_name = '${person}';`);
+    }
+
 
     //// INSERT TO DATABASE
+
+    addDepToDB(dName) {
+        return this.query(`INSERT INTO department ("name") VALUES ('${dName}');`);
+    }
 
     addRoleToDB(nrName, nrSalary, d_id) {
         return this.query(`INSERT INTO "role" ("name", salary, department_id) VALUES ('${nrName}', ${nrSalary}, ${d_id});`)
@@ -70,9 +74,6 @@ class DB {
         return this.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${eFirst}', '${eLast}', ${r_id}, ${m_id});`)
     }
 
-    addDepToDB(dName) {
-        return this.query(`INSERT INTO department ("name") VALUES ('${dName}');`);
-    }
 
 
     //// UPDATE EMPLOYEE ON DB
