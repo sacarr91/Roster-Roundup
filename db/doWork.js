@@ -179,31 +179,31 @@ async function addNewEmployee() {
     let answers;
     getArraysForNewEmp()
         .then(({ empArr, roleArr }) => {
-                answers = inquirer.prompt([
-                    {
-                        type: 'input',
-                        name: 'newEmpFirstName',
-                        message: `What is the employee's first name?`,
-                    },
-                    {
-                        type: 'input',
-                        name: 'newEmpLastName',
-                        message: `What is the employee's last name?`,
-                    },
-                    {
-                        type: 'list',
-                        name: 'newEmpRole',
-                        message: `What is the employee's role?`,
-                        choices: [...roleArr]
-                    },
-                    {
-                        type: 'list',
-                        name: 'newEmpManager',
-                        message: `Who is the employee's manager?`,
-                        choices: [...empArr, { name: 'None', value: '' }]
-                    }]);
-                return answers;
-            })
+            answers = inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'newEmpFirstName',
+                    message: `What is the employee's first name?`,
+                },
+                {
+                    type: 'input',
+                    name: 'newEmpLastName',
+                    message: `What is the employee's last name?`,
+                },
+                {
+                    type: 'list',
+                    name: 'newEmpRole',
+                    message: `What is the employee's role?`,
+                    choices: [...roleArr]
+                },
+                {
+                    type: 'list',
+                    name: 'newEmpManager',
+                    message: `Who is the employee's manager?`,
+                    choices: [...empArr, { name: 'None', value: '' }]
+                }]);
+            return answers;
+        })
         .then(({ newEmpFirstName, newEmpLastName, newEmpRole, newEmpManager }) => {
             sql.addEmpToDB(newEmpFirstName, newEmpLastName, newEmpRole, newEmpManager);
             console.log(`Added ${newEmpFirstName} ${newEmpLastName} to employee database.`);
@@ -215,40 +215,31 @@ async function addNewEmployee() {
 
 ////// UPDATE
 
-function updateEmployeeRole() {
-    let employee;
-    empArray();
-    roleArray()
-        .then((listEmpArr, listRoleArr) =>
-            inquirer.prompt([
+async function updateEmployeeRole() {
+    let answers;
+    getArraysForNewEmp()
+        .then(({ empArr, roleArr }) => {
+            answers = inquirer.prompt([
                 {
                     type: 'list',
                     name: 'updateEmpSelect',
                     message: `Which employee's role do you want to update?`,
-                    choices: [...listEmpArr]
+                    choices: [...empArr]
                 },
                 {
                     type: 'list',
                     name: 'updateEmpRole',
                     message: `Which role do you want to assign the selected employee?`,
                     short: '(Use arrow keys)',
-                    choices: [...listRoleArr]
+                    choices: [...roleArr]
                 },
-            ]))
-        .then(({ updateEmpSelect }) => {
-            employee = updateEmpSelect;
-            let e_id = sql.getPersonId(employee);
-            return e_id;
+            ]);
+            return answers;
         })
-        .then(({ updateEmpRole }) => {
-            let r_id = sql.getRoleId(updateEmpRole);
-            return r_id;
-        })
-        .then((e_id, r_id) =>
-            sql.updateEmpRoleInDB(e_id, r_id)
-        )
-        .then((employee) =>
-            console.log(`Updated ${employee}'s role`))
+        .then(({ updateEmpSelect, updateEmpRole }) => {
+        sql.updateEmpRoleInDB(updateEmpSelect, updateEmpRole);
+        console.log(`Updated employee's role`)
+    })
         .then(() => userChoice())
 }
 
