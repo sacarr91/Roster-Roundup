@@ -41,7 +41,7 @@ class DB {
     }
 
     listAllEmployees() {
-        return this.query("SELECT e.first_name || ' ' || e.last_name, e.id FROM employee e ORDER BY first_name;");
+        return this.query("SELECT e.first_name || ' ' || e.last_name AS name, e.id FROM employee e ORDER BY first_name;");
     }
 
 

@@ -94,7 +94,12 @@ async function empArray() {
     let listEmpArr = [];
     await sql.listAllEmployees()
         .then(({ rows }) => {
-            rows.forEach(row => listEmpArr.push(`${row.name}`));
+            rows.forEach(row => listEmpArr.push(
+                {
+                    name: `${row.name}`,
+                    value: row.id
+                }
+            ));
         });
     return listEmpArr;
 }
