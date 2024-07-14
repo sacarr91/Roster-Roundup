@@ -82,7 +82,7 @@ async function deptArray() {
         .then(({ rows }) => {
             rows.forEach(row => listDeptArr.push(
                 {
-                    name: `${row.name}`,
+                    name: row.name,
                     value: row.id
                 }
             ));
@@ -90,13 +90,13 @@ async function deptArray() {
     return listDeptArr;
 }
 
-async function empArray() {
+async function managerArray() {
     let listEmpArr = [];
     await sql.listAllEmployees()
         .then(({ rows }) => {
             rows.forEach(row => listEmpArr.push(
                 {
-                    name: `${row.name}`,
+                    name: row.name,
                     value: row.id
                 }
             ));
@@ -108,12 +108,21 @@ async function roleArray() {
     let listRoleArr = [];
     await sql.listAllRoles()
         .then(({ rows }) => {
-            rows.forEach(row => listRoleArr.push(`${row.name}`));
+            rows.forEach(row => listRoleArr.push(
+                {
+                    name: row.title,
+                    value: row.id
+                }
+            ));
         });
     return listRoleArr;
 }
 
-
+async function getArraysForNewEmp(empArr, roleArr) {
+    empArr = await managerArray();
+    roleArr = await roleArray();
+    return { empArr, roleArr };
+};
 
 
 ///////// ADD NEW
@@ -166,49 +175,38 @@ function addNewRole() {
 
 }
 
-function addNewEmployee() {
-    let employee;
-    empArray();
-    roleArray()
-        .then((listEmpArr, listRoleArr) =>
-            inquirer.prompt([
-                {
-                    type: 'input',
-                    name: 'newEmpFirstName',
-                    message: `What is the employee's first name?`,
-                },
-                {
-                    type: 'input',
-                    name: 'newEmpLastName',
-                    message: `What is the employee's last name?`,
-                },
-                {
-                    type: 'list',
-                    name: 'newEmpRole',
-                    message: `What is the employee's role?`,
-                    choices: [...listRoleArr]
-                },
-                {
-                    type: 'list',
-                    name: 'newEmpManager',
-                    message: `Who is the employee's manager?`,
-                    choices: [...listEmpArr, 'None']
-                }])
-        )
-        //get m_id
-        .then(({ newEmpManager }) => {
-            let m_id = sql.getPersonId(newEmpManager);
-            return m_id;
-        })
-        //get r_id
-        .then(({ newEmpRole }) => {
-            let r_id = sql.getRoleId(newEmpRole);
-            return r_id;
-        })
-        .then(({ newEmpFirstName, newEmpLastName }, r_id, m_id) => {
-            employee = `${newEmpFirstName} ${newEmpLastName}`;
-            sql.addEmpToDB(newEmpFirstName, newEmpLastName, r_id, m_id);
-            console.log(`Added ${employee} department to database.`);
+async function addNewEmployee() {
+    let answers;
+    getArraysForNewEmp()
+        .then(({ empArr, roleArr }) => {
+                answers = inquirer.prompt([
+                    {
+                        type: 'input',
+                        name: 'newEmpFirstName',
+                        message: `What is the employee's first name?`,
+                    },
+                    {
+                        type: 'input',
+                        name: 'newEmpLastName',
+                        message: `What is the employee's last name?`,
+                    },
+                    {
+                        type: 'list',
+                        name: 'newEmpRole',
+                        message: `What is the employee's role?`,
+                        choices: [...roleArr]
+                    },
+                    {
+                        type: 'list',
+                        name: 'newEmpManager',
+                        message: `Who is the employee's manager?`,
+                        choices: [...empArr, { name: 'None', value: '' }]
+                    }]);
+                return answers;
+            })
+        .then(({ newEmpFirstName, newEmpLastName, newEmpRole, newEmpManager }) => {
+            sql.addEmpToDB(newEmpFirstName, newEmpLastName, newEmpRole, newEmpManager);
+            console.log(`Added ${newEmpFirstName} ${newEmpLastName} to employee database.`);
         })
         .then(() => userChoice())
 }
