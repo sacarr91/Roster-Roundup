@@ -33,30 +33,15 @@ class DB {
     //// FOR CHOICE ARRAYS 
 
     listAllDepartments() {
-        return this.query("SELECT department.name FROM department ORDER BY department;");
+        return this.query("SELECT department.name, department.id FROM department ORDER BY department.name;");
     }
 
     listAllRoles() {
-        return this.query("SELECT role.title FROM role ORDER BY title;");
+        return this.query("SELECT role.title, role.id FROM role ORDER BY title;");
     }
 
     listAllEmployees() {
-        return this.query("SELECT e.first_name || ' ' || e.last_name FROM employee e ORDER BY first_name;");
-    }
-
-
-    //// GET ID
-
-    getDepartmentId(depName) { // use in addNewRole()
-        return this.query(`SELECT id FROM department WHERE department."name" = '${depName}';`);
-    }
-
-    getRoleId(roleName) { // use in addNewEmployee()
-        return this.query(`SELECT id FROM role e WHERE role.title = '${roleName}';`);
-    }
-
-    getPersonId(person) { // use in addNewEmployee()
-        return this.query(`SELECT id FROM employee e WHERE e.first_name || ' ' || e.last_name = '${person}';`);
+        return this.query("SELECT e.first_name || ' ' || e.last_name, e.id FROM employee e ORDER BY first_name;");
     }
 
 
@@ -67,7 +52,7 @@ class DB {
     }
 
     addRoleToDB(nrName, nrSalary, d_id) {
-        return this.query(`INSERT INTO "role" ("name", salary, department_id) VALUES ('${nrName}', ${nrSalary}, ${d_id});`)
+        return this.query(`INSERT INTO role (title, salary, department_id) VALUES ('${nrName}', ${nrSalary}, ${d_id});`)
     }
 
     addEmpToDB(eFirst, eLast, r_id, m_id) {

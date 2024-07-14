@@ -2,8 +2,8 @@ const inquirer = require('inquirer');
 const sql = require('./query');
 const { mainMenu } = require('./mainMenu')
 
-function userChoice() {
-    inquirer.prompt(mainMenu)
+async function userChoice() {
+    await inquirer.prompt(mainMenu)
         .then(({ main }) => {
             switch (main) {
                 case "viewAllDepDetail": {
@@ -39,8 +39,8 @@ function userChoice() {
                     break;
                 }
             }
-        });
-};
+        })
+}
 
 
 ////////// VIEW ALL
@@ -51,8 +51,8 @@ function viewAllDepartments() {
             let departments = rows;
             console.table(departments);
         })
-        .then(() => userChoice());
-};
+        .then(() => userChoice())
+}
 
 function viewAllRoles() {
     sql.findAllRoles()
@@ -60,8 +60,8 @@ function viewAllRoles() {
             let roles = rows;
             console.table(roles);
         })
-        .then(() => userChoice());
-};
+        .then(() => userChoice())
+}
 
 function viewAllEmployees() {
     sql.findAllEmployees()
@@ -69,8 +69,8 @@ function viewAllEmployees() {
             let employees = rows;
             console.table(employees);
         })
-        .then(() => userChoice());
-};
+        .then(() => userChoice())
+}
 
 
 
@@ -80,10 +80,15 @@ async function deptArray() {
     let listDeptArr = [];
     await sql.listAllDepartments()
         .then(({ rows }) => {
-            rows.forEach(row => listDeptArr.push(`${row.name}`));
+            rows.forEach(row => listDeptArr.push(
+                {
+                    name: `${row.name}`,
+                    value: row.id
+                }
+            ));
         });
     return listDeptArr;
-};
+}
 
 async function empArray() {
     let listEmpArr = [];
@@ -92,7 +97,7 @@ async function empArray() {
             rows.forEach(row => listEmpArr.push(`${row.name}`));
         });
     return listEmpArr;
-};
+}
 
 async function roleArray() {
     let listRoleArr = [];
@@ -101,7 +106,7 @@ async function roleArray() {
             rows.forEach(row => listRoleArr.push(`${row.name}`));
         });
     return listRoleArr;
-};
+}
 
 
 
@@ -120,14 +125,14 @@ function addNewDepartment() {
             sql.addDepToDB(newDep);
             console.log(`Added ${newDep} department to database.`);
         })
-        .then(() => userChoice());
-};
+        .then(() => userChoice())
+}
 
 function addNewRole() {
-    let role;
+    let answers;
     deptArray()
-        .then((listDeptArr) =>
-            inquirer.prompt([
+        .then(async (listDeptArr) => {
+            answers = await inquirer.prompt([
                 {
                     type: 'input',
                     name: 'newRoleName',
@@ -144,20 +149,17 @@ function addNewRole() {
                     name: 'newRoleDep',
                     message: 'Which department does the role belong to?',
                     short: '(Use arrow keys)',
-                    choices: [...listDeptArr, 'None']
-                }])
-        )
-        .then(({ newRoleDep }) => {
-            let d_id = sql.getDepartmentId(newRoleDep);
-            return d_id;
+                    choices: [...listDeptArr]
+                }]);
+            return answers;
         })
-        .then(({ newRoleName, newRoleSalary, d_id }) => {
-            role = newRoleName;
-            sql.addRoleToDB(role, newRoleSalary, d_id);
-            console.log(`Added role of ${role} to database`);
+        .then(({ newRoleDep, newRoleName, newRoleSalary }) => {
+            sql.addRoleToDB(newRoleName, newRoleSalary, newRoleDep);
+            console.log(`Added role of ${newRoleName} to database`);
         })
-        .then(() => userChoice());
-};
+        .then(() => userChoice())
+
+}
 
 function addNewEmployee() {
     let employee;
@@ -203,8 +205,8 @@ function addNewEmployee() {
             sql.addEmpToDB(newEmpFirstName, newEmpLastName, r_id, m_id);
             console.log(`Added ${employee} department to database.`);
         })
-        .then(() => userChoice());
-};
+        .then(() => userChoice())
+}
 
 
 
@@ -244,8 +246,8 @@ function updateEmployeeRole() {
         )
         .then((employee) =>
             console.log(`Updated ${employee}'s role`))
-        .then(() => userChoice());
-};
+        .then(() => userChoice())
+}
 
 module.exports = {
     userChoice,
